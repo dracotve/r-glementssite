@@ -19,6 +19,7 @@
             color: #d4d4d4;
             line-height: 1.6;
             overflow-x: hidden;
+            height: 100vh;
         }
         
         .scanline {
@@ -37,7 +38,78 @@
             pointer-events: none;
             z-index: 9999;
         }
-        
+
+        /* --- STYLES DU SAS D'ENTRÉE (GATE) --- */
+        #access-gate {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            color: #0f0; /* Vert rétro pour l'interface de connexion */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 10000;
+            font-family: 'Roboto Mono', monospace;
+            transition: opacity 1s ease;
+        }
+
+        .gate-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px #0f0;
+        }
+
+        .gate-input-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #password-input {
+            padding: 10px;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            background: #000;
+            border: 2px solid #0f0;
+            color: #0f0;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            width: 250px;
+        }
+
+        #submit-button {
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            background: #004d00;
+            color: #0f0;
+            border: 2px solid #0f0;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        #submit-button:hover {
+            background: #008000;
+        }
+
+        #error-message {
+            color: #f00; /* Rouge pour l'erreur */
+            margin-top: 1rem;
+            font-weight: bold;
+            text-shadow: 0 0 5px #f00;
+        }
+
+        /* --- STYLES DU CONTENU PRINCIPAL --- */
+        #main-content {
+            opacity: 0; /* Rendu invisible par défaut, révélé par JS */
+            transition: opacity 1s ease;
+        }
+
         header {
             background: linear-gradient(180deg, #2d2d2d 0%, #1a1a1a 100%);
             border-bottom: 3px solid #555;
@@ -72,11 +144,6 @@
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
             margin: 1rem 0;
             letter-spacing: 3px;
-        }
-        
-        .scp-logo {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
         }
         
         .classified {
@@ -125,17 +192,16 @@
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
         }
 
-        /* NOUVEAU STYLE : Bouton de candidature désactivé */
+        /* Bouton de candidature désactivé */
         .application-button.disabled {
-            background-color: #4a4a4a; /* Gris neutre */
+            background-color: #4a4a4a; 
             color: #999; 
             border: 2px solid #666;
             cursor: not-allowed;
             opacity: 0.7;
-            box-shadow: none; /* Enlève l'ombre lumineuse */
-            pointer-events: none; /* Assure que le bouton n'est pas cliquable */
+            box-shadow: none; 
+            pointer-events: none; 
         }
-        /* Fin du nouveau style */
 
         /* Animation de clignotement ROUGE pour O5 */
         @keyframes pulse-red {
@@ -395,239 +461,251 @@
 </head>
 <body>
     <div class="scanline"></div>
-    
-    <header>
-        <div class="header-warning">⚠ ACCÈS AUTORISÉ - PERSONNEL NIVEAU 4 ET SUPÉRIEUR ⚠</div>
-        <img src="https://imgur.com/usB2PDH.png" alt="Site-32 Logo" class="site-logo" style="max-width: 200px; margin: 1rem auto; display: block;">
-        <h1>SCP FOUNDATION</h1>
-        <p class="classified">DOCUMENT CLASSIFIÉ</p>
-        <p>Site-32 Règlement Officiel</p>
-    </header>
-    
-    <div class="application-link">
-        
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdeMpi4TD9GjNAxwdWJ3gXuQRENO8fDCo955vikpkE6nV_EEw/viewform?usp=dialog" 
-           target="_blank" 
-           class="button-base application-button"
-           id="adminApplicationButton">
-            POSTULER POUR LE STATUT D'ADMINISTRATEUR
-        </a>
 
-        <a href="#" 
-           onclick="return false;" 
-           class="button-base o5-button">
-            REJOINDRE LE CONSEIL O5 (INDISPONIBLE)
-        </a>
-        
+    <div id="access-gate">
+        <p style="font-size: 1.5rem;">[SCP FOUNDATION - SITE-32]</p>
+        <p style="font-size: 1.2rem; margin-bottom: 3rem;">AUTHENTIFICATION DU PERSONNEL REQUISE</p>
+        <div class="gate-title">ENTRÉE CLASSIFIÉE</div>
+        <div class="gate-input-container">
+            <label for="password-input">MOT DE PASSE D'ACCÈS :</label>
+            <input type="password" id="password-input" placeholder="ENTRER LE CODE">
+            <button id="submit-button" onclick="checkPassword()">ACCÉDER</button>
+            <p id="error-message"></p>
+        </div>
     </div>
-    <div class="container">
+    <div id="main-content">
+        <header>
+            <div class="header-warning">⚠ ACCÈS AUTORISÉ - PERSONNEL NIVEAU 4 ET SUPÉRIEUR ⚠</div>
+            <img src="https://imgur.com/usB2PDH.png" alt="Site-32 Logo" class="site-logo" style="max-width: 200px; margin: 1rem auto; display: block;">
+            <h1>SCP FOUNDATION</h1>
+            <p class="classified">DOCUMENT CLASSIFIÉ</p>
+            <p>Site-32 Règlement Officiel</p>
+        </header>
         
-        <div class="section" onclick="toggleSection(this)">
-            <div class="section-header">
-                <div class="section-title">
-                    <h2>📜 I. Règles Générales et Comportement</h2>
-                    <span class="clearance-level clearance-level-1">NIVEAU 1</span>
-                </div>
-                <span class="toggle-icon">▶</span>
-            </div>
-            <div class="section-content">
-                <h3>✨ Respect et Conduite</h3>
-                <ul>
-                    <li>Respect total de tous les joueurs et du staff, même <strong>hors-RP</strong>. 🙏</li>
-                    <li>Contenu discriminatoire, raciste, sexiste, homophobe, ou politique <strong>interdit</strong>. 🚫</li>
-                    <li><strong>Métagaming</strong> et <strong>triche</strong> interdits. 🧠❌</li>
-                    <li>Les exploits ou glitches non prévus par le RP sont <strong>interdits</strong>. 🐜</li>
-                </ul>
-                
-                <h3>🎙️ Micro et Communication</h3>
-                <ul>
-                    <li>Micro audible et clair, pas de musique ou sons perturbants. 🗣️</li>
-                    <li>Pas de spam, hurlements, ear-rape. 🙉</li>
-                    <li>Priorité à la communication <strong>RP</strong>. 💬</li>
-                </ul>
-            </div>
+        <div class="application-link">
+            
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdeMpi4TD9GjNAxwdWJ3gXuQRENO8fDCo955vikpkE6nV_EEw/viewform?usp=dialog" 
+               target="_blank" 
+               class="button-base application-button"
+               id="adminApplicationButton">
+                POSTULER POUR LE STATUT D'ADMINISTRATEUR
+            </a>
+
+            <a href="#" 
+               onclick="return false;" 
+               class="button-base o5-button">
+                REJOINDRE LE CONSEIL O5 (INDISPONIBLE)
+            </a>
+            
         </div>
-        
-        <div class="section" onclick="toggleSection(this)">
-            <div class="section-header">
-                <div class="section-title">
-                    <h2>🎭 II. Règles de Jeu de Rôle (RP)</h2>
-                    <span class="clearance-level clearance-level-1">NIVEAU 1</span>
+        <div class="container">
+            
+            <div class="section" onclick="toggleSection(this)">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>📜 I. Règles Générales et Comportement</h2>
+                        <span class="clearance-level clearance-level-1">NIVEAU 1</span>
+                    </div>
+                    <span class="toggle-icon">▶</span>
                 </div>
-                <span class="toggle-icon">▶</span>
-            </div>
-            <div class="section-content">
-                <h3>🛑 No-RP</h3>
-                <ul>
-                    <li>Actions cohérentes avec la classe jouée. 👔</li>
-                    <li>Pas de termes <strong>HRP</strong>. 🙅‍♂️</li>
-                    <li><strong>Mort RP (Fear RP)</strong> obligatoire pour les humains. 😨</li>
-                </ul>
-                
-                <h3>🔫 KOS et Engagement</h3>
-                <ul>
-                    <li>Autorisé selon la classe et la situation (voir Section III/IV). ✅</li>
-                    <li>Interdit contre des humains désarmés, coopératifs ou non menaçants. 🤝❌</li>
-                </ul>
-                
-                <h3>🚓 Escorte et Trahison</h3>
-                <ul>
-                    <li>Gardes/FIM doivent escorter les Classes-D et Scientifiques. 🧑‍🔬⛓️</li>
-                    <li>Trahison humaine injustifiée = faute grave. 🔪⚠️</li>
-                    <li>SCP ne trahissent que pour RP justifié. 👾</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="section" onclick="toggleSection(this)">
-            <div class="section-header">
-                <div class="section-title">
-                    <h2>🧍 III. Règles Spécifiques aux Classes Humaines</h2>
-                    <span class="clearance-level clearance-level-2">NIVEAU 2</span>
+                <div class="section-content">
+                    <h3>✨ Respect et Conduite</h3>
+                    <ul>
+                        <li>Respect total de tous les joueurs et du staff, même <strong>hors-RP</strong>. 🙏</li>
+                        <li>Contenu discriminatoire, raciste, sexiste, homophobe, ou politique <strong>interdit</strong>. 🚫</li>
+                        <li><strong>Métagaming</strong> et <strong>triche</strong> interdits. 🧠❌</li>
+                        <li>Les exploits ou glitches non prévus par le RP sont <strong>interdits</strong>. 🐜</li>
+                    </ul>
+                    
+                    <h3>🎙️ Micro et Communication</h3>
+                    <ul>
+                        <li>Micro audible et clair, pas de musique ou sons perturbants. 🗣️</li>
+                        <li>Pas de spam, hurlements, ear-rape. 🙉</li>
+                        <li>Priorité à la communication <strong>RP</strong>. 💬</li>
+                    </ul>
                 </div>
-                <span class="toggle-icon">▶</span>
             </div>
-            <div class="section-content">
-                <h3>🧪 Scientifiques</h3>
-                <div class="info-box">
-                    <strong>Objectif :</strong> survivre et assister la Fondation. 🌟
+            
+            <div class="section" onclick="toggleSection(this)">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>🎭 II. Règles de Jeu de Rôle (RP)</h2>
+                        <span class="clearance-level clearance-level-1">NIVEAU 1</span>
+                    </div>
+                    <span class="toggle-icon">▶</span>
                 </div>
-                <ul>
-                    <li>Respecter les ordres des Gardes/FIM si menacé. 👮</li>
-                    <li><strong>Fear RP obligatoire</strong> face aux SCP. 😱</li>
-                    <li>Ne jamais attaquer un autre scientifique. 😇</li>
-                </ul>
-                
-                <h3>🍊 Classe-D</h3>
-                <div class="warning-box">
-                    <strong>Objectif :</strong> survivre ou tenter d'échapper à la Fondation. 🏃
+                <div class="section-content">
+                    <h3>🛑 No-RP</h3>
+                    <ul>
+                        <li>Actions cohérentes avec la classe jouée. 👔</li>
+                        <li>Pas de termes <strong>HRP</strong>. 🙅‍♂️</li>
+                        <li><strong>Mort RP (Fear RP)</strong> obligatoire pour les humains. 😨</li>
+                    </ul>
+                    
+                    <h3>🔫 KOS et Engagement</h3>
+                    <ul>
+                        <li>Autorisé selon la classe et la situation (voir Section III/IV). ✅</li>
+                        <li>Interdit contre des humains désarmés, coopératifs ou non menaçants. 🤝❌</li>
+                    </ul>
+                    
+                    <h3>🚓 Escorte et Trahison</h3>
+                    <ul>
+                        <li>Gardes/FIM doivent escorter les Classes-D et Scientifiques. 🧑‍🔬⛓️</li>
+                        <li>Trahison humaine injustifiée = faute grave. 🔪⚠️</li>
+                        <li>SCP ne trahissent que pour RP justifié. 👾</li>
+                    </ul>
                 </div>
-                <ul>
-                    <li>Coopérer avec les ordres des Gardes/FIM lorsqu'il n'y a pas de RP crédible pour résister. 🔗</li>
-                    <li>Ne pas faire de trahison abusive (tuer un humain désarmé sans justification RP). 🛑</li>
-                </ul>
-                
-                <h3>⚔️ Forces d'Intervention (Garde, FIM, Chaos)</h3>
-                <ul>
-                    <li>Respect strict de la hiérarchie et des ordres. 🫡</li>
-                    <li>Priorité de tir : <strong>SCP</strong> → <strong>Chaos</strong> → <strong>Classe-D</strong> (à escorter, pas à tuer sans RP). 🎯</li>
-                    <li>Interrogatoires RP possibles mais courts et réalistes. 🤔</li>
-                    <li>Usage de la force justifié uniquement par RP crédible. ⚖️</li>
-                </ul>
-                
-                <h3>🟢 Chaos Insurgency / Factions Hostiles</h3>
-                <ul>
-                    <li>Objectif : perturber la Fondation ou s'échapper. 💥</li>
-                    <li>Ne pas tuer des alliés sans raison RP. 🤝</li>
-                    <li>KOS ciblé uniquement contre la Fondation et ses alliés. 🚩</li>
-                </ul>
             </div>
-        </div>
-        
-        <div class="section" onclick="toggleSection(this)">
-            <div class="section-header">
-                <div class="section-title">
-                    <h2>👽 IV. Règles Spécifiques aux SCP</h2>
-                    <span class="clearance-level clearance-level-3">NIVEAU 3</span>
+            
+            <div class="section" onclick="toggleSection(this)">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>🧍 III. Règles Spécifiques aux Classes Humaines</h2>
+                        <span class="clearance-level clearance-level-2">NIVEAU 2</span>
+                    </div>
+                    <span class="toggle-icon">▶</span>
                 </div>
-                <span class="toggle-icon">▶</span>
-            </div>
-            <div class="section-content">
-                <h3>🗿 SCP-173</h3>
-                <ul>
-                    <li><strong>Silence :</strong> SCP-173 ne communique pas vocalement ni textuellement. 🤫</li>
-                    <li>Les déplacements et attaques se font de manière RP, sans obligation stricte de regard ou de condition de visibilité. 🚶‍♂️</li>
-                </ul>
-                
-                <h3>🩺 SCP-049</h3>
-                <ul>
-                    <li><strong>Le "Curing" (La Cure) :</strong> Vous pouvez attaquer pour soigner ou RP, selon votre objectif. 💉</li>
-                    <li><strong>Réanimation :</strong> Créez des 049-2 après élimination d'une cible. 🧟</li>
-                    <li>Les interactions avec les Class-D ou Scientifiques peuvent être flexibles selon le RP. 💬</li>
-                </ul>
-                
-                <h3>💻 SCP-079</h3>
-                <ul>
-                    <li><strong>Support et Stratégie :</strong> SCP-079 peut soutenir les SCP et les humains pour RP, manipuler des portes, ascenseurs, ou systèmes électriques. ⚡</li>
-                    <li><strong>Communication :</strong> Transmettre des informations stratégiques aux alliés, humains ou SCP. 📡</li>
-                    <li>Pas de <strong>griefing passif</strong> : bloquer une zone ou une porte de manière permanente sans raison stratégique reste interdit. 🚪❌</li>
-                </ul>
-                
-                <h3>😢 SCP-096</h3>
-                <ul>
-                    <li><strong>Déclenchement (Trigger) :</strong> Motivation principale est d'éliminer les cibles qui ont vu son visage. 🖼️</li>
-                    <li><strong>Passivité :</strong> Si personne n'a vu son visage, reste passif, pleure et évite les autres entités. 😭</li>
-                    <li><strong>Silence passif :</strong> en état passif (non déclenché), vous ne parlez qu'avec des sons de pleurs ou de murmures. 🤫</li>
-                </ul>
-                
-                <h3>🐕 SCP-939 (With Many Voices)</h3>
-                <ul>
-                    <li><strong>Mimétisme et Chasse :</strong> Utiliser l'ouïe pour localiser les proies et la capacité vocale pour les imiter et les attirer. 👂🗣️</li>
-                    <li><strong>Attaque conditionnelle :</strong> N'attaquer un humain que si celui-ci fait du bruit ou entre en collision avec SCP-939. 💥</li>
-                    <li>Parler avec une voix crédible pour attirer les humains. 🎣</li>
-                    <li>Ne pas imiter un autre SCP ou un Administrateur. 🎭❌</li>
-                </ul>
-                
-                <h3>🕳️ SCP-106</h3>
-                <ul>
-                    <li><strong>Prédation ciblée :</strong> Chercher des proies pour les envoyer dans votre Pocket Dimension pour tuer ou relâcher. 🌌</li>
-                    <li><strong>Téléportation :</strong> Utiliser la capacité de téléportation pour apparaître stratégiquement. ⚡</li>
-                    <li>Pas de camping prolongé autour d'un spawn ou zone cruciale. ⛺❌</li>
-                </ul>
-                
-                <h3>🥎 SCP-018 / 🥤 SCP-207</h3>
-                <ul>
-                    <li><strong>SCP-018 - Lancer RP :</strong> Manipuler la balle de manière réaliste et dynamique. 🤾</li>
-                    <li><strong>SCP-207 - Effet RP :</strong> Jouer l'effet de vitesse après consommation, sans arrêt sans logique RP. 💨</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="section" onclick="toggleSection(this)">
-            <div class="section-header">
-                <div class="section-title">
-                    <h2>🔬 V. Règles Avancées par Classe</h2>
-                    <span class="clearance-level clearance-level-3">NIVEAU 3</span>
+                <div class="section-content">
+                    <h3>🧪 Scientifiques</h3>
+                    <div class="info-box">
+                        <strong>Objectif :</strong> survivre et assister la Fondation. 🌟
+                    </div>
+                    <ul>
+                        <li>Respecter les ordres des Gardes/FIM si menacé. 👮</li>
+                        <li><strong>Fear RP obligatoire</strong> face aux SCP. 😱</li>
+                        <li>Ne jamais attaquer un autre scientifique. 😇</li>
+                    </ul>
+                    
+                    <h3>🍊 Classe-D</h3>
+                    <div class="warning-box">
+                        <strong>Objectif :</strong> survivre ou tenter d'échapper à la Fondation. 🏃
+                    </div>
+                    <ul>
+                        <li>Coopérer avec les ordres des Gardes/FIM lorsqu'il n'y a pas de RP crédible pour résister. 🔗</li>
+                        <li>Ne pas faire de trahison abusive (tuer un humain désarmé sans justification RP). 🛑</li>
+                    </ul>
+                    
+                    <h3>⚔️ Forces d'Intervention (Garde, FIM, Chaos)</h3>
+                    <ul>
+                        <li>Respect strict de la hiérarchie et des ordres. 🫡</li>
+                        <li>Priorité de tir : <strong>SCP</strong> → <strong>Chaos</strong> → <strong>Classe-D</strong> (à escorter, pas à tuer sans RP). 🎯</li>
+                        <li>Interrogatoires RP possibles mais courts et réalistes. 🤔</li>
+                        <li>Usage de la force justifié uniquement par RP crédible. ⚖️</li>
+                    </ul>
+                    
+                    <h3>🟢 Chaos Insurgency / Factions Hostiles</h3>
+                    <ul>
+                        <li>Objectif : perturber la Fondation ou s'échapper. 💥</li>
+                        <li>Ne pas tuer des alliés sans raison RP. 🤝</li>
+                        <li>KOS ciblé uniquement contre la Fondation et ses alliés. 🚩</li>
+                    </ul>
                 </div>
-                <span class="toggle-icon">▶</span>
             </div>
-            <div class="section-content">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Classe</th>
-                            <th>Règles supplémentaires</th>
-                            <th>Emojis Clés</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Garde</strong></td>
-                            <td>Toujours vérifier les couloirs avant de tirer. Ne pas tirer sur Classe-D coopérative.</td>
-                            <td>🚨🚪</td>
-                        </tr>
-                        <tr>
-                            <td><strong>FIM</strong></td>
-                            <td>Priorité à la capture et non à la tuerie. Utiliser grenades et armes avec prudence RP.</td>
-                            <td>🔗💣</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Chaos</strong></td>
-                            <td>Les explosions doivent être RP justifiées. Ne pas détruire tout environnement sans sens RP.</td>
-                            <td>🧨🚧</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Scientifique</strong></td>
-                            <td>Documenter tout événement RP (capturé, SCP tué, évasion). Pas d'armes offensives sauf mission RP.</td>
-                            <td>📝🚫🔫</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Classe-D</strong></td>
-                            <td>Planifier les évasions RP. Ne pas exploiter les failles pour tuer inutilement.</td>
-                            <td>🗺️🔪❌</td>
-                        </tr>
-                        <tr>
-                            <td><strong>SCP-049</strong></td>
+            
+            <div class="section" onclick="toggleSection(this)">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>👽 IV. Règles Spécifiques aux SCP</h2>
+                        <span class="clearance-level clearance-level-3">NIVEAU 3</span>
+                    </div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="section-content">
+                    <h3>🗿 SCP-173</h3>
+                    <ul>
+                        <li><strong>Silence :</strong> SCP-173 ne communique pas vocalement ni textuellement. 🤫</li>
+                        <li>Les déplacements et attaques se font de manière RP, sans obligation stricte de regard ou de condition de visibilité. 🚶‍♂️</li>
+                    </ul>
+                    
+                    <h3>🩺 SCP-049</h3>
+                    <ul>
+                        <li><strong>Le "Curing" (La Cure) :</strong> Vous pouvez attaquer pour soigner ou RP, selon votre objectif. 💉</li>
+                        <li><strong>Réanimation :</strong> Créez des 049-2 après élimination d'une cible. 🧟</li>
+                        <li>Les interactions avec les Class-D ou Scientifiques peuvent être flexibles selon le RP. 💬</li>
+                    </ul>
+                    
+                    <h3>💻 SCP-079</h3>
+                    <ul>
+                        <li><strong>Support et Stratégie :</strong> SCP-079 peut soutenir les SCP et les humains pour RP, manipuler des portes, ascenseurs, ou systèmes électriques. ⚡</li>
+                        <li><strong>Communication :</strong> Transmettre des informations stratégiques aux alliés, humains ou SCP. 📡</li>
+                        <li>Pas de <strong>griefing passif</strong> : bloquer une zone ou une porte de manière permanente sans raison stratégique reste interdit. 🚪❌</li>
+                    </ul>
+                    
+                    <h3>😢 SCP-096</h3>
+                    <ul>
+                        <li><strong>Déclenchement (Trigger) :</strong> Motivation principale est d'éliminer les cibles qui ont vu son visage. 🖼️</li>
+                        <li><strong>Passivité :</strong> Si personne n'a vu son visage, reste passif, pleure et évite les autres entités. 😭</li>
+                        <li><strong>Silence passif :</strong> en état passif (non déclenché), vous ne parlez qu'avec des sons de pleurs ou de murmures. 🤫</li>
+                    </ul>
+                    
+                    <h3>🐕 SCP-939 (With Many Voices)</h3>
+                    <ul>
+                        <li><strong>Mimétisme et Chasse :</strong> Utiliser l'ouïe pour localiser les proies et la capacité vocale pour les imiter et les attirer. 👂🗣️</li>
+                        <li><strong>Attaque conditionnelle :</strong> N'attaquer un humain que si celui-ci fait du bruit ou entre en collision avec SCP-939. 💥</li>
+                        <li>Parler avec une voix crédible pour attirer les humains. 🎣</li>
+                        <li>Ne pas imiter un autre SCP ou un Administrateur. 🎭❌</li>
+                    </ul>
+                    
+                    <h3>🕳️ SCP-106</h3>
+                    <ul>
+                        <li><strong>Prédation ciblée :</strong> Chercher des proies pour les envoyer dans votre Pocket Dimension pour tuer ou relâcher. 🌌</li>
+                        <li><strong>Téléportation :</strong> Utiliser la capacité de téléportation pour apparaître stratégiquement. ⚡</li>
+                        <li>Pas de camping prolongé autour d'un spawn ou zone cruciale. ⛺❌</li>
+                    </ul>
+                    
+                    <h3>🥎 SCP-018 / 🥤 SCP-207</h3>
+                    <ul>
+                        <li><strong>SCP-018 - Lancer RP :</strong> Manipuler la balle de manière réaliste et dynamique. 🤾</li>
+                        <li><strong>SCP-207 - Effet RP :</strong> Jouer l'effet de vitesse après consommation, sans arrêt sans logique RP. 💨</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="section" onclick="toggleSection(this)">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>🔬 V. Règles Avancées par Classe</h2>
+                        <span class="clearance-level clearance-level-3">NIVEAU 3</span>
+                    </div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="section-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Classe</th>
+                                <th>Règles supplémentaires</th>
+                                <th>Emojis Clés</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Garde</strong></td>
+                                <td>Toujours vérifier les couloirs avant de tirer. Ne pas tirer sur Classe-D coopérative.</td>
+                                <td>🚨🚪</td>
+                            </tr>
+                            <tr>
+                                <td><strong>FIM</strong></td>
+                                <td>Priorité à la capture et non à la tuerie. Utiliser grenades et armes avec prudence RP.</td>
+                                <td>🔗💣</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Chaos</strong></td>
+                                <td>Les explosions doivent être RP justifiées. Ne pas détruire tout environnement sans sens RP.</td>
+                                <td>🧨🚧</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Scientifique</strong></td>
+                                <td>Documenter tout événement RP (capturé, SCP tué, évasion). Pas d'armes offensives sauf mission RP.</td>
+                                <td>📝🚫🔫</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Classe-D</strong></td>
+                                <td>Planifier les évasions RP. Ne pas exploiter les failles pour tuer inutilement.</td>
+                                <td>🗺️🔪❌</td>
+                            </tr>
+                            <tr>
+                                <td><strong>SCP-049</strong></td>
                             <td>Réanimation des 049-2 après élimination, attaque flexible selon RP.</td>
                             <td>🧟‍♂️🔄</td>
                         </tr>
@@ -663,65 +741,106 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
-        </div>
-        
-        <div class="section" onclick="toggleSection(this)">
-            <div class="section-header">
-                <div class="section-title">
-                    <h2>👑 VI. Procédures Administratives</h2>
-                    <span class="clearance-level clearance-level-4">NIVEAU 4</span>
-                </div>
-                <span class="toggle-icon">▶</span>
-            </div>
-            <div class="section-content">
-                <h3>📢 Interactions avec l'Administration</h3>
-                <ul>
-                    <li>Signalement via commande ou Discord. 💬</li>
-                    <li>Respect immédiat des décisions. 🫡</li>
-                    <li>Discussions sur sanctions <strong>hors-jeu seulement</strong>. 🗣️ HRP</li>
-                </ul>
-                
-                <div class="warning-important">
-                    <strong>⚠ AVERTISSEMENT :</strong> Le non-respect de ce règlement peut entraîner des sanctions allant du simple avertissement au bannissement permanent. Toutes les actions sont enregistrées et peuvent être utilisées comme preuves.
                 </div>
             </div>
+            
+            <div class="section" onclick="toggleSection(this)">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>👑 VI. Procédures Administratives</h2>
+                        <span class="clearance-level clearance-level-4">NIVEAU 4</span>
+                    </div>
+                    <span class="toggle-icon">▶</span>
+                </div>
+                <div class="section-content">
+                    <h3>📢 Interactions avec l'Administration</h3>
+                    <ul>
+                        <li>Signalement via commande ou Discord. 💬</li>
+                        <li>Respect immédiat des décisions. 🫡</li>
+                        <li>Discussions sur sanctions <strong>hors-jeu seulement</strong>. 🗣️ HRP</li>
+                    </ul>
+                    
+                    <div class="warning-important">
+                        <strong>⚠ AVERTISSEMENT :</strong> Le non-respect de ce règlement peut entraîner des sanctions allant du simple avertissement au bannissement permanent. Toutes les actions sont enregistrées et peuvent être utilisées comme preuves.
+                    </div>
+                </div>
+            </div>
+            
         </div>
         
+        <footer>
+            <p><strong>SCP FOUNDATION - SITE-32</strong></p>
+            <p>SÉCURISER • CONTENIR • PROTÉGER</p>
+            <p class="redacted">████████████████████</p>
+            <p style="font-size: 0.8rem; margin-top: 1rem; opacity: 0.7;">
+                Ce document est la propriété de la Fondation SCP. Toute divulgation non autorisée sera punie conformément aux protocoles de sécurité.
+            </p>
+        </footer>
     </div>
     
-    <footer>
-        <p><strong>SCP FOUNDATION - SITE-32</strong></p>
-        <p>SÉCURISER • CONTENIR • PROTÉGER</p>
-        <p class="redacted">████████████████████</p>
-        <p style="font-size: 0.8rem; margin-top: 1rem; opacity: 0.7;">
-            Ce document est la propriété de la Fondation SCP. Toute divulgation non autorisée sera punie conformément aux protocoles de sécurité.
-        </p>
-    </footer>
-    
     <script>
-        function toggleSection(element) {
-            element.classList.toggle('expanded');
+        // Fonction pour vérifier le mot de passe du sas d'entrée
+        function checkPassword() {
+            const passwordInput = document.getElementById('password-input').value; 
+            const gate = document.getElementById('access-gate');
+            const mainContent = document.getElementById('main-content');
+            const errorMessage = document.getElementById('error-message');
+            const correctPassword = '1596'; // Mot de passe correct MODIFIÉ
+
+            if (passwordInput === correctPassword) {
+                // Déverrouillage : masquer le sas et afficher le contenu
+                gate.style.opacity = '0';
+                setTimeout(() => {
+                    gate.style.display = 'none';
+                    mainContent.style.opacity = '1';
+                    // Lancement des autres scripts si le déverrouillage est réussi
+                    checkApplicationDeadline();
+                }, 1000); // 1 seconde de transition
+            } else {
+                // Mot de passe incorrect
+                errorMessage.textContent = 'ACCÈS REFUSÉ. IDENTIFIANTS INVALIDE. TENTATIVE ENREGISTRÉE.';
+                document.getElementById('password-input').value = '';
+                
+                // Animation d'erreur : border rouge temporaire
+                document.getElementById('password-input').style.borderColor = '#f00';
+                setTimeout(() => {
+                    document.getElementById('password-input').style.borderColor = '#0f0';
+                }, 500);
+            }
         }
 
-        document.addEventListener('DOMContentLoaded', (event) => {
+        // Lancement du déverrouillage si la touche Entrée est pressée
+        document.getElementById('password-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        // Fonction d'application de la date limite 
+        function checkApplicationDeadline() {
             const button = document.getElementById('adminApplicationButton');
             // Date cible : Vendredi 19 Décembre 2025
             const deadline = new Date('2025-12-19T00:00:00');
             const now = new Date();
 
             if (now < deadline) {
-                // Le bouton est désactivé si la date actuelle est antérieure au 19/12/2025
                 button.classList.add('disabled');
-                
-                // Optionnel : Changer le texte pour indiquer la date de déblocage
-                button.textContent = "POSTULER (DÉBLOQUÉ LE 19/12/2025)";
+                // Mise à jour du texte avec la date réelle
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                const formattedDate = deadline.toLocaleDateString('fr-FR', options);
+                button.textContent = `POSTULER (DÉBLOQUÉ LE ${formattedDate.toUpperCase()})`;
             } else {
-                // Le bouton est actif
                 button.textContent = "POSTULER POUR LE STATUT D'ADMINISTRATEUR";
                 button.classList.remove('disabled');
             }
-        });
+        }
+
+        // Fonction pour développer/réduire les sections
+        function toggleSection(element) {
+            element.classList.toggle('expanded');
+        }
+
+        // Le script de date limite est appelé après le déverrouillage dans checkPassword()
     </script>
 </body>
 </html>
