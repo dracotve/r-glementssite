@@ -70,40 +70,33 @@
             align-items: center;
         }
 
-        #password-input {
-            padding: 10px;
+        /* Styles du bouton de connexion */
+        #connect-button {
+            padding: 15px 30px;
             font-size: 1.2rem;
-            margin-bottom: 1rem;
-            background: #000;
-            border: 2px solid #0f0;
-            color: #0f0;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            width: 250px;
-        }
-
-        #submit-button {
-            padding: 10px 20px;
-            font-size: 1.1rem;
+            margin-top: 2rem;
             background: #004d00;
             color: #0f0;
             border: 2px solid #0f0;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.3s, box-shadow 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
         }
 
-        #submit-button:hover {
+        #connect-button:hover {
             background: #008000;
+            box-shadow: 0 0 15px #0f0;
         }
 
-        #error-message {
-            color: #f00; /* Rouge pour l'erreur */
-            margin-top: 1rem;
+        #status-message {
+            color: #0f0; 
+            margin-top: 1.5rem;
             font-weight: bold;
-            text-shadow: 0 0 5px #f00;
+            text-shadow: 0 0 5px #0f0;
         }
-
+        
         /* --- STYLES DU CONTENU PRINCIPAL --- */
         #main-content {
             opacity: 0; /* Rendu invisible par défaut, révélé par JS */
@@ -464,13 +457,11 @@
 
     <div id="access-gate">
         <p style="font-size: 1.5rem;">[SCP FOUNDATION - SITE-32]</p>
-        <p style="font-size: 1.2rem; margin-bottom: 3rem;">AUTHENTIFICATION DU PERSONNEL REQUISE</p>
-        <div class="gate-title">ENTRÉE CLASSIFIÉE</div>
+        <p style="font-size: 1.2rem; margin-bottom: 3rem;">INITIALISATION DU SYSTÈME</p>
+        <div class="gate-title">ACCÈS AU RÈGLEMENT</div>
         <div class="gate-input-container">
-            <label for="password-input">MOT DE PASSE D'ACCÈS :</label>
-            <input type="password" id="password-input" placeholder="ENTRER LE CODE">
-            <button id="submit-button" onclick="checkPassword()">ACCÉDER</button>
-            <p id="error-message"></p>
+            <button id="connect-button" onclick="authenticateUser()">CONNEXION SÉCURISÉE</button>
+            <p id="status-message"></p>
         </div>
     </div>
     <div id="main-content">
@@ -755,6 +746,7 @@
                 <div class="section-content">
                     <h3>📢 Interactions avec l'Administration</h3>
                     <ul>
+                        <li>Pour faire un ticket en jeu, vous pouvez utiliser la touche **N** et le petit **⚠️** (Avertissement). 💬</li>
                         <li>Signalement via commande ou Discord. 💬</li>
                         <li>Respect immédiat des décisions. 🫡</li>
                         <li>Discussions sur sanctions <strong>hors-jeu seulement</strong>. 🗣️ HRP</li>
@@ -779,42 +771,33 @@
     </div>
     
     <script>
-        // Fonction pour vérifier le mot de passe du sas d'entrée
-        function checkPassword() {
-            const passwordInput = document.getElementById('password-input').value; 
+        // Fonction d'authentification simplifiée (clic sur le bouton)
+        function authenticateUser() {
             const gate = document.getElementById('access-gate');
             const mainContent = document.getElementById('main-content');
-            const errorMessage = document.getElementById('error-message');
-            const correctPassword = '1596'; // Mot de passe correct MODIFIÉ
+            const statusMessage = document.getElementById('status-message');
+            const connectButton = document.getElementById('connect-button');
+            
+            // Simuler le chargement
+            connectButton.disabled = true;
+            statusMessage.textContent = 'AUTHENTIFICATION EN COURS...';
 
-            if (passwordInput === correctPassword) {
-                // Déverrouillage : masquer le sas et afficher le contenu
-                gate.style.opacity = '0';
-                setTimeout(() => {
-                    gate.style.display = 'none';
-                    mainContent.style.opacity = '1';
-                    // Lancement des autres scripts si le déverrouillage est réussi
-                    checkApplicationDeadline();
-                }, 1000); // 1 seconde de transition
-            } else {
-                // Mot de passe incorrect
-                errorMessage.textContent = 'ACCÈS REFUSÉ. IDENTIFIANTS INVALIDE. TENTATIVE ENREGISTRÉE.';
-                document.getElementById('password-input').value = '';
+            setTimeout(() => {
+                statusMessage.textContent = 'ACCÈS AUTORISÉ. BIENVENUE, PERSONNEL DU SITE-32.';
                 
-                // Animation d'erreur : border rouge temporaire
-                document.getElementById('password-input').style.borderColor = '#f00';
+                // Déverrouillage : masquer le sas et afficher le contenu après une courte attente
                 setTimeout(() => {
-                    document.getElementById('password-input').style.borderColor = '#0f0';
-                }, 500);
-            }
+                    gate.style.opacity = '0';
+                    setTimeout(() => {
+                        gate.style.display = 'none';
+                        mainContent.style.opacity = '1';
+                        // Lancement des autres scripts si le déverrouillage est réussi
+                        checkApplicationDeadline();
+                    }, 1000); // 1 seconde de transition du fade-out
+                }, 500); // Temps pour afficher le message "ACCÈS AUTORISÉ"
+            }, 1000); // 1 seconde pour le temps de "chargement"
         }
 
-        // Lancement du déverrouillage si la touche Entrée est pressée
-        document.getElementById('password-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkPassword();
-            }
-        });
 
         // Fonction d'application de la date limite 
         function checkApplicationDeadline() {
@@ -840,7 +823,6 @@
             element.classList.toggle('expanded');
         }
 
-        // Le script de date limite est appelé après le déverrouillage dans checkPassword()
     </script>
 </body>
 </html>
