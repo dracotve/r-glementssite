@@ -185,6 +185,21 @@
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
         }
 
+        /* Bouton Discord (BLEU) */
+        .info-button {
+            background-color: #7289da;
+            color: #fff;
+            border: 2px solid #99aab5;
+            box-shadow: 0 0 15px rgba(114, 137, 218, 0.5);
+        }
+
+        .info-button:hover {
+            background-color: #99aab5;
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(153, 170, 181, 0.8);
+        }
+
+
         /* Bouton de candidature désactivé */
         .application-button.disabled {
             background-color: #4a4a4a; 
@@ -474,6 +489,12 @@
         </header>
         
         <div class="application-link">
+            
+            <a href="https://discord.gg/ykRgd9wRCT" 
+               target="_blank" 
+               class="button-base info-button">
+                REJOINDRE LE DISCORD 💬
+            </a>
             
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSdeMpi4TD9GjNAxwdWJ3gXuQRENO8fDCo955vikpkE6nV_EEw/viewform?usp=dialog" 
                target="_blank" 
@@ -868,11 +889,11 @@
         // Fonction d'application de la date limite 
         function checkApplicationDeadline() {
             const button = document.getElementById('adminApplicationButton');
-            // Date cible : Vendredi 19 Décembre 2025
-            // Note: Comme la date actuelle est après le 19 Décembre 2025 (selon le contexte), le bouton sera actif.
+            // Date cible : Vendredi 19 Décembre 2025 (Définie pour garder le bouton actif après cette date)
             const deadline = new Date('2025-12-19T00:00:00');
             const now = new Date();
 
+            // Si le temps actuel est avant la date limite, désactiver le bouton
             if (now < deadline) {
                 button.classList.add('disabled');
                 // Mise à jour du texte avec la date réelle
