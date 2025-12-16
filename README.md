@@ -1,2 +1,2 @@
 # r-glementssite
-le site qui a le règlement
+à ne pas utiliser sans autorisation de draco_tve
