@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCP Foundation - Site-32 Règlement</title>
+    <title>ABRI-315 - Règlement Officiel</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Roboto+Mono:wght@400;700&display=swap');
         
@@ -19,7 +19,6 @@
             color: #d4d4d4;
             line-height: 1.6;
             overflow-x: hidden;
-            height: 100vh;
         }
         
         .scanline {
@@ -30,8 +29,8 @@
             height: 100%;
             background: repeating-linear-gradient(
                 0deg,
-                rgba(0, 0, 0, 0.15),
-                rgba(0, 0, 0, 0.15) 1px,
+                rgba(0, 0, 0, 0.1),
+                rgba(0, 0, 0, 0.1) 1px,
                 transparent 1px,
                 transparent 2px
             );
@@ -39,878 +38,343 @@
             z-index: 9999;
         }
 
-        /* --- STYLES DU SAS D'ENTRÉE (GATE) --- */
-        #access-gate {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            color: #0f0; /* Vert rétro pour l'interface de connexion */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            z-index: 10000;
-            font-family: 'Roboto Mono', monospace;
-            transition: opacity 1s ease;
-        }
-
-        .gate-title {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            text-shadow: 0 0 10px #0f0;
-        }
-
-        .gate-input-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Styles du bouton de connexion */
-        #connect-button {
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            margin-top: 2rem;
-            background: #004d00;
-            color: #0f0;
-            border: 2px solid #0f0;
-            cursor: pointer;
-            transition: background 0.3s, box-shadow 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-        }
-
-        #connect-button:hover {
-            background: #008000;
-            box-shadow: 0 0 15px #0f0;
-        }
-
-        #status-message {
-            color: #0f0; 
-            margin-top: 1.5rem;
-            font-weight: bold;
-            text-shadow: 0 0 5px #0f0;
-        }
-        
-        /* --- STYLES DU CONTENU PRINCIPAL --- */
-        #main-content {
-            opacity: 0; /* Rendu invisible par défaut, révélé par JS */
-            transition: opacity 1s ease;
-        }
-
         header {
             background: linear-gradient(180deg, #2d2d2d 0%, #1a1a1a 100%);
-            border-bottom: 3px solid #555;
-            padding: 2rem;
+            border-bottom: 3px solid #fdd835;
+            padding: 2rem 1rem;
             text-align: center;
-            position: relative;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
         }
-        
-        /* Définition de l'animation de clignotement VERT */
-        @keyframes pulse-green {
-            0% { box-shadow: 0 0 10px rgba(40, 167, 69, 0.5); }
-            50% { box-shadow: 0 0 20px rgba(40, 167, 69, 0.9), 0 0 5px rgba(255, 255, 255, 0.4); }
-            100% { box-shadow: 0 0 10px rgba(40, 167, 69, 0.5); }
+
+        .logo-container {
+            margin-bottom: 1rem;
         }
 
-        /* ACCÈS AUTORISÉ : VERT AVEC ANIMATION */
-        .header-warning {
-            background: #28a745; /* Vert foncé */
-            color: #fff;
-            padding: 0.5rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            border: 1px solid #4caf50;
-            animation: pulse-green 2s infinite alternate; 
+        .logo-container img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #fdd835;
+            box-shadow: 0 0 15px rgba(253, 216, 53, 0.3);
+            object-fit: cover;
         }
-        
+
         h1 {
             font-family: 'Special Elite', cursive;
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: #fff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-            margin: 1rem 0;
-            letter-spacing: 3px;
-        }
-        
-        .classified {
-            color: #888;
-            font-weight: 700;
             letter-spacing: 5px;
-        }
-        
-        /* Styles pour les boutons */
-        .application-link {
-            text-align: center;
-            padding: 20px 0;
-            background: rgba(0, 0, 0, 0.4);
-            border-bottom: 3px solid #666;
-            border-top: 3px solid #666;
-            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.05);
-            display: flex; 
-            justify-content: center;
-            gap: 20px; 
-            flex-wrap: wrap; 
+            margin-bottom: 0.5rem;
         }
 
-        .button-base {
-            display: inline-block;
-            padding: 15px 30px;
-            text-decoration: none;
-            font-family: 'Roboto Mono', monospace;
+        .classified {
+            color: #fdd835;
             font-weight: 700;
-            font-size: 1.1rem;
-            letter-spacing: 2px;
-            border-radius: 5px;
-            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
-        }
-
-        /* Bouton Administrateur (JAUNE VIF) */
-        .application-button {
-            background-color: #fdd835; 
-            color: #1a1a1a; 
-            border: 2px solid #ffeb3b;
-            box-shadow: 0 0 15px rgba(253, 216, 53, 0.8);
-        }
-
-        .application-button:hover {
-            background-color: #ffe066; 
-            border-color: #fff;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-        }
-
-        /* Bouton Discord (BLEU) */
-        .info-button {
-            background-color: #7289da;
-            color: #fff;
-            border: 2px solid #99aab5;
-            box-shadow: 0 0 15px rgba(114, 137, 218, 0.5);
-        }
-
-        .info-button:hover {
-            background-color: #99aab5;
-            border-color: #fff;
-            box-shadow: 0 0 20px rgba(153, 170, 181, 0.8);
-        }
-
-
-        /* Bouton de candidature désactivé */
-        .application-button.disabled {
-            background-color: #4a4a4a; 
-            color: #999; 
-            border: 2px solid #666;
-            cursor: not-allowed;
-            opacity: 0.7;
-            box-shadow: none; 
-            pointer-events: none; 
-        }
-
-        /* Animation de clignotement ROUGE pour O5 */
-        @keyframes pulse-red {
-            0% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
-            50% { box-shadow: 0 0 25px rgba(255, 0, 0, 1), 0 0 8px rgba(255, 255, 255, 0.5); }
-            100% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
-        }
-
-        /* Bouton O5 (ROUGE CLIGNOTANT - INDISPONIBLE) */
-        .o5-button {
-            background-color: #dc3545; 
-            color: #fff; 
-            border: 2px solid #ff6666;
-            cursor: not-allowed;
-            opacity: 0.8;
-            animation: pulse-red 1.5s infinite alternate; 
-        }
-        
-        /* ... Le reste des styles de sections et de clearance restent inchangés ... */
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        
-        .section {
-            background: rgba(35, 35, 35, 0.9);
-            border: 2px solid #444;
-            border-left: 5px solid #666; 
-            margin: 2rem 0;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
-            transition: all 0.3s ease;
-            overflow: hidden;
-        }
-        
-        .section-header {
-            padding: 1.5rem 2rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.3s ease;
-            user-select: none;
-        }
-        
-        .section-header:hover {
-            background: rgba(70, 70, 70, 0.2);
-        }
-        
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex: 1;
-        }
-        
-        .section-header h2 {
-            font-family: 'Special Elite', cursive;
-            color: #aaa;
-            font-size: 1.5rem;
+            letter-spacing: 8px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 0;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
         }
-        
-        .toggle-icon {
-            font-size: 1.5rem;
-            color: #888;
-            transition: transform 0.3s ease;
-        }
-        
-        .section.expanded .toggle-icon {
-            transform: rotate(90deg);
-        }
-        
-        .section-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease;
-            padding: 0 2rem;
-        }
-        
-        .section.expanded .section-content {
-            max-height: 5000px;
-            padding: 0 2rem 2rem 2rem;
-        }
-        
-        h3 {
-            color: #999;
-            font-size: 1.3rem;
-            margin: 1.5rem 0 1rem 0;
+
+        /* ACTIONS / BOUTONS */
+        .header-actions {
+            margin-top: 25px;
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
         }
-        
-        ul {
-            list-style: none;
-            margin-left: 1rem;
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
         }
-        
+
+        .btn-discord {
+            background-color: #fdd835;
+            color: #000;
+            border: 2px solid #fdd835;
+            animation: pulse 2s infinite;
+        }
+
+        .btn-discord:hover {
+            background-color: transparent;
+            color: #fdd835;
+            transform: translateY(-3px);
+        }
+
+        .btn-apply {
+            background-color: transparent;
+            color: #fdd835;
+            border: 2px solid #fdd835;
+        }
+
+        .btn-apply:hover {
+            background-color: #fdd835;
+            color: #000;
+            transform: translateY(-3px);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(253, 216, 53, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(253, 216, 53, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(253, 216, 53, 0); }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 1rem;
+        }
+
+        .section {
+            background: rgba(30, 30, 30, 0.9);
+            border: 1px solid #444;
+            border-left: 5px solid #fdd835;
+            margin-bottom: 1.5rem;
+            border-radius: 0 5px 5px 0;
+            transition: transform 0.2s ease;
+        }
+
+        .section:hover {
+            transform: translateX(5px);
+            background: rgba(40, 40, 40, 0.95);
+        }
+
+        .section-header {
+            padding: 1.2rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            color: #eee;
+        }
+
+        .section-content {
+            padding: 0 1.5rem 1.5rem 1.5rem;
+        }
+
+        ul { list-style: none; }
+
         li {
             margin: 0.8rem 0;
             padding-left: 1.5rem;
             position: relative;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 0.5rem;
         }
-        
+
         li:before {
-            content: "▸";
+            content: "◈";
             position: absolute;
             left: 0;
-            color: #777;
-            font-weight: bold;
-        }
-        
-        strong {
-            color: #bbb;
-            font-weight: 700;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-            background: rgba(0, 0, 0, 0.5);
-        }
-        
-        th, td {
-            border: 1px solid #444;
-            padding: 1rem;
-            text-align: left;
-        }
-        
-        th {
-            background: #3a3a3a;
-            color: #fff;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        tr:hover {
-            background: rgba(70, 70, 70, 0.2);
-        }
-        
-        .warning-box {
-            background: rgba(60, 60, 60, 0.3);
-            border: 2px solid #555;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 5px;
-        }
-        
-        .info-box {
-            background: rgba(50, 50, 50, 0.3);
-            border: 2px solid #666;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 5px;
+            color: #fdd835;
         }
 
-        /* AVERTISSEMENT ROUGE */
-        .warning-important {
-            background: rgba(80, 0, 0, 0.7); 
-            border: 2px solid #ff4444; 
-            color: #ffaaaa; 
-            padding: 1.5rem;
-            margin: 1rem 0;
-            border-radius: 5px;
-            font-weight: 700;
-            text-transform: uppercase;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        .sanction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
         }
-        
+
+        .sanction-card {
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            border-radius: 5px;
+            border-top: 2px solid #555;
+        }
+
+        .sanction-card h4 {
+            color: #fdd835;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
         footer {
-            background: #2d2d2d;
-            border-top: 3px solid #555;
-            padding: 2rem;
             text-align: center;
-            margin-top: 3rem;
-        }
-        
-        .redacted {
-            background: #000;
-            color: #000;
-            user-select: none;
-            padding: 0 5px;
-        }
-        
-        /* Styles des Niveaux de Clearance */
-        .clearance-level {
-            display: inline-block;
-            color: #fff;
-            padding: 0.3rem 0.8rem;
-            border-radius: 3px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            border: 1px solid currentColor;
-        }
-        
-        /* NIVEAU 1 : GRIS FROID */
-        .clearance-level-1 { 
-            background: #546e7a; 
-            color: #eee;
-        }
-
-        /* NIVEAU 2 : BLEU */
-        .clearance-level-2 { 
-            background: #03a9f4; 
-            color: #000;
-        }
-
-        /* NIVEAU 3 : ORANGE/AMBRE */
-        .clearance-level-3 { 
-            background: #ff9800; 
-            color: #1a1a1a;
-        }
-
-        /* NIVEAU 4 (ADMIN) : JAUNE VIF */
-        .clearance-level-4 { 
-            background: #ffb300; 
-            border-color: #ffd600; 
-            color: #1a1a1a; 
-        }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            .container {
-                padding: 1rem;
-            }
-            
-            .section-header {
-                padding: 1rem;
-            }
-            
-            .section.expanded .section-content {
-                padding: 0 1rem 1rem 1rem;
-            }
-            
-            .section-header h2 {
-                font-size: 1.1rem;
-            }
-            
-            table {
-                font-size: 0.85rem;
-            }
-            
-            th, td {
-                padding: 0.5rem;
-            }
+            padding: 2rem;
+            color: #666;
+            font-size: 0.8rem;
         }
     </style>
 </head>
 <body>
     <div class="scanline"></div>
 
-    <div id="access-gate">
-        <p style="font-size: 1.5rem;">[SCP FOUNDATION - SITE-32]</p>
-        <p style="font-size: 1.2rem; margin-bottom: 3rem;">INITIALISATION DU SYSTÈME</p>
-        <div class="gate-title">ACCÈS AU RÈGLEMENT</div>
-        <div class="gate-input-container">
-            <button id="connect-button" onclick="authenticateUser()">CONNEXION SÉCURISÉE</button>
-            <p id="status-message"></p>
+    <header>
+        <div class="logo-container">
+            <img src="https://i.imgur.com/PXokbrF.jpeg" alt="Logo ABRI-315">
         </div>
-    </div>
-    <div id="main-content">
-        <header>
-            <div class="header-warning">⚠ ACCÈS AUTORISÉ - PERSONNEL NIVEAU 4 ET SUPÉRIEUR ⚠</div>
-            <img src="https://imgur.com/usB2PDH.png" alt="Site-32 Logo" class="site-logo" style="max-width: 200px; margin: 1rem auto; display: block;">
-            <h1>SCP FOUNDATION</h1>
-            <p class="classified">DOCUMENT CLASSIFIÉ</p>
-            <p>Site-32 Règlement Officiel</p>
-        </header>
+        <p class="classified">Protocole de Sécurité Interne</p>
+        <h1>ABRI-315</h1>
+        <p>Directives obligatoires pour tout le personnel et résidents</p>
         
-        <div class="application-link">
-            
-            <a href="https://discord.gg/ykRgd9wRCT" 
-               target="_blank" 
-               class="button-base info-button">
-                REJOINDRE LE DISCORD 💬
-            </a>
-            
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdeMpi4TD9GjNAxwdWJ3gXuQRENO8fDCo955vikpkE6nV_EEw/viewform?usp=dialog" 
-               target="_blank" 
-               class="button-base application-button"
-               id="adminApplicationButton">
-                POSTULER POUR LE STATUT D'ADMINISTRATEUR
-            </a>
-
-            <a href="#" 
-               onclick="return false;" 
-               class="button-base o5-button">
-                REJOINDRE LE CONSEIL O5 (INDISPONIBLE)
-            </a>
-            
+        <div class="header-actions">
+            <a href="https://discord.gg/TBTjCED7aK" target="_blank" class="btn btn-discord">🌐 Discord</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdeMpi4TD9GjNAxwdWJ3gXuQRENO8fDCo955vikpkE6nV_EEw/viewform" target="_blank" class="btn btn-apply">📝 Candidature</a>
         </div>
-        <div class="container">
-            
-            <div class="section" onclick="toggleSection(this)">
-                <div class="section-header">
-                    <div class="section-title">
-                        <h2>🔰 RÈGLES DE BASE DU ROLEPLAY (RP)</h2>
-                        <span class="clearance-level clearance-level-1">PRINCIPES FONDAMENTAUX</span>
-                    </div>
-                    <span class="toggle-icon">▶</span>
-                </div>
-                <div class="section-content">
-                    <h3>Principe Fondamental 🎭</h3>
-                    <ul>
-                        <li>Le RP (RolePlay) consiste à incarner un personnage de manière **crédible et cohérente** dans l’univers SCP / Site-32.</li>
-                        <li>Toute action doit avoir une **logique RP**, même en situation de stress ou de combat. 🧠</li>
-                    </ul>
-                    
-                    <h3>HRP / OOC 🚫</h3>
-                    <ul>
-                        <li>Les termes **HRP / OOC / AFK / LOL / MDR** sont interdits en jeu.</li>
-                        <li>Les discussions hors-RP se font uniquement via les canaux prévus (chat HRP, Discord, admin). 💬</li>
-                        <li>Utiliser des informations obtenues hors-jeu en RP est **strictement interdit (Métagaming)**. ❌</li>
-                    </ul>
-                    
-                    <h3>PowerGaming ❌</h3>
-                    <ul>
-                        <li>Il est interdit d’effectuer des actions **irréalistes ou impossibles** :</li>
-                        <li>Résister à plusieurs personnes armées sans raison RP.</li>
-                        <li>Courir indéfiniment sans fatigue.</li>
-                        <li>Ignorer des blessures graves. 🩸</li>
-                        <li>Chaque action doit laisser une chance de **réaction RP** à l’autre joueur. ⚖️</li>
-                    </ul>
+    </header>
 
-                    <h3>Fear RP 😨</h3>
-                    <ul>
-                        <li>La peur est **obligatoire** face à : SCP, Armes à feu, Menaces crédibles, Supériorité numérique.</li>
-                        <li>Ignorer un danger évident est une **faute RP grave**. ⚠️</li>
-                    </ul>
-                    
-                    <h3>Mort RP & Blessures ☠️</h3>
-                    <ul>
-                        <li>La mort n’annule pas les événements précédents : **Pas de retour immédiat à l’action**.</li>
-                        <li>Pas de **vengeance directe après la mort (No Revenge Kill)**.</li>
-                        <li>Les blessures doivent être **jouées RP** (boiter, ralentir, demander de l’aide). 🏥</li>
-                    </ul>
-                    
-                    <h3>Cohérence du Personnage 👤</h3>
-                    <ul>
-                        <li>Ton personnage doit avoir : Une personnalité stable, Des objectifs clairs, Des réactions logiques selon sa classe.</li>
-                        <li>Les **changements radicaux de comportement sans justification RP** sont interdits. 🔄❌</li>
-                    </ul>
+    <div class="container">
 
-                    <h3>Interaction et Fair-Play 🤝</h3>
-                    <ul>
-                        <li>Le RP doit rester équilibré et plaisant pour tous.</li>
-                        <li>Forcer un RP ou humilier volontairement un joueur est **interdit**. 🚫</li>
-                        <li>Le **fun RP prime sur la victoire**. 🎮❤️</li>
-                    </ul>
-                </div>
+        <div class="section">
+            <div class="section-header"><h2>🤝 SECTION 1 – Règles Générales</h2></div>
+            <div class="section-content">
+                <ul>
+                    <li>Le respect est obligatoire envers tous les joueurs et le staff. 📢</li>
+                    <li>Les propos racistes, sexistes, homophobes ou insultants sont interdits. 🚫</li>
+                    <li>Le troll, le flood vocal/écrit et le spam sont interdits. 🔇</li>
+                    <li>Le HRP vocal est interdit sauf en zone safe ou accord du staff. 🗣️</li>
+                    <li>Le micro doit être clair (pas de musique forte ou bruit parasite). 🎙️</li>
+                </ul>
             </div>
-
-            
-            <div class="section" onclick="toggleSection(this)">
-                <div class="section-header">
-                    <div class="section-title">
-                        <h2>I. Règles Générales et Comportement 🤝</h2>
-                        <span class="clearance-level clearance-level-1">NIVEAU 1</span>
-                    </div>
-                    <span class="toggle-icon">▶</span>
-                </div>
-                <div class="section-content">
-                    <h3>Respect et Conduite ✨</h3>
-                    <ul>
-                        <li>Respect total de tous les joueurs et du staff, même **hors-RP**. 🙏</li>
-                        <li>Contenu discriminatoire, raciste, sexiste, homophobe, ou politique **interdit**. 🚫</li>
-                        <li>**Métagaming** et **triche** interdits. 🧠❌</li>
-                        <li>Les exploits ou glitches non prévus par le RP sont **interdits**. 🐜</li>
-                    </ul>
-                    
-                    <h3>Micro et Communication 🎙️</h3>
-                    <ul>
-                        <li>Micro audible et clair, pas de musique ou sons perturbants. 🗣️</li>
-                        <li>Pas de spam, hurlements, ear-rape. 🙉</li>
-                        <li>Priorité à la communication **RP**. 💬</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="section" onclick="toggleSection(this)">
-                <div class="section-header">
-                    <div class="section-title">
-                        <h2>II. Règles de Jeu de Rôle (RP) 🎭</h2>
-                        <span class="clearance-level clearance-level-1">NIVEAU 1</span>
-                    </div>
-                    <span class="toggle-icon">▶</span>
-                </div>
-                <div class="section-content">
-                    <h3>No-RP 🛑</h3>
-                    <ul>
-                        <li>Actions cohérentes avec la classe jouée. 👔</li>
-                        <li>Pas de termes **HRP**. 🙅‍♂️</li>
-                        <li>**Mort RP (Fear RP)** est obligatoire pour les humains. 😨</li>
-                    </ul>
-                    
-                    <h3>KOS et Engagement 🔫</h3>
-                    <ul>
-                        <li>Autorisé selon la classe et la situation (voir Section III/IV). ✅</li>
-                        <li>Interdit contre des humains désarmés, coopératifs ou non menaçants. 🤝❌</li>
-                    </ul>
-                    
-                    <h3>Escorte et Trahison 🚓</h3>
-                    <ul>
-                        <li>Gardes/FIM doivent escorter les Classes-D et Scientifiques. 🧑‍🔬⛓️</li>
-                        <li>Trahison humaine injustifiée = faute grave. 🔪⚠️</li>
-                        <li>SCP ne trahissent que pour RP justifié. 👾</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="section" onclick="toggleSection(this)">
-                <div class="section-header">
-                    <div class="section-title">
-                        <h2>III. Règles Spécifiques aux Classes Humaines 🧍</h2>
-                        <span class="clearance-level clearance-level-2">NIVEAU 2</span>
-                    </div>
-                    <span class="toggle-icon">▶</span>
-                </div>
-                <div class="section-content">
-                    <h3>Scientifiques 🧪</h3>
-                    <div class="info-box">
-                        **Objectif :** survivre et assister la Fondation. 🌟
-                    </div>
-                    <ul>
-                        <li>Respecter les ordres des Gardes/FIM si menacé. 👮</li>
-                        <li>**Fear RP obligatoire** face aux SCP. 😱</li>
-                        <li>Ne jamais attaquer un autre scientifique. 😇</li>
-                    </ul>
-                    
-                    <h3>Classe-D 🍊</h3>
-                    <div class="warning-box">
-                        **Objectif :** survivre ou tenter d'échapper à la Fondation. 🏃
-                    </div>
-                    <ul>
-                        <li>Coopérer avec les ordres des Gardes/FIM lorsqu'il n'y a pas de RP crédible pour résister. 🔗</li>
-                        <li>Ne pas faire de trahison abusive (tuer un humain désarmé sans justification RP). 🛑</li>
-                    </ul>
-                    
-                    <h3>Forces d'Intervention (Garde, FIM, Chaos) ⚔️</h3>
-                    <ul>
-                        <li>Respect strict de la hiérarchie et des ordres. 🫡</li>
-                        <li>Priorité de tir : **SCP** → **Chaos** → **Classe-D** (à escorter, pas à tuer sans RP). 🎯</li>
-                        <li>Interrogatoires RP possibles mais courts et réalistes. 🤔</li>
-                        <li>Usage de la force justifié uniquement par RP crédible. ⚖️</li>
-                    </ul>
-                    
-                    <h3>Chaos Insurgency / Factions Hostiles 🟢</h3>
-                    <ul>
-                        <li>Objectif : perturber la Fondation ou s'échapper. 💥</li>
-                        <li>Ne pas tuer des alliés sans raison RP. 🤝</li>
-                        <li>KOS ciblé uniquement contre la Fondation et ses alliés. 🚩</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="section" onclick="toggleSection(this)">
-                <div class="section-header">
-                    <div class="section-title">
-                        <h2>IV. Règles Spécifiques aux SCP 👽</h2>
-                        <span class="clearance-level clearance-level-3">NIVEAU 3</span>
-                    </div>
-                    <span class="toggle-icon">▶</span>
-                </div>
-                <div class="section-content">
-                    
-                    <h3>SCP-914 ⚙️</h3>
-                    <div class="warning-important" style="background: rgba(80, 50, 0, 0.7); border: 2px solid #ffa500; color: #ffebcd;">
-                        **RÈGLE D'EXPLOIT** : Il est **strictement interdit d’améliorer les cartes d’accès (Keycards) via SCP-914**. Toute tentative d’exploitation ou de contournement de cette règle sera sanctionnée. 🚫🪪
-                    </div>
-                    
-                    <h3>SCP-173 🗿</h3>
-                    <ul>
-                        <li>**Silence :** SCP-173 ne communique pas vocalement ni textuellement. 🤫</li>
-                        <li>Les déplacements et attaques se font de manière RP, sans obligation stricte de regard ou de condition de visibilité. 🚶‍♂️</li>
-                    </ul>
-                    
-                    <h3>SCP-049 🩺</h3>
-                    <ul>
-                        <li>**Le "Curing" (La Cure) :** Vous pouvez attaquer pour soigner ou RP, selon votre objectif. 💉</li>
-                        <li>**Réanimation :** Créez des 049-2 après élimination d'une cible. 🧟</li>
-                        <li>Les interactions avec les Class-D ou Scientifiques peuvent être flexibles selon le RP. 💬</li>
-                    </ul>
-                    
-                    <h3>SCP-079 💻</h3>
-                    <ul>
-                        <li>**Support et Stratégie :** SCP-079 peut soutenir les SCP et les humains pour RP, manipuler des portes, ascenseurs, ou systèmes électriques. ⚡</li>
-                        <li>**Communication :** Transmettre des informations stratégiques aux alliés, humains ou SCP. 📡</li>
-                        <li>Pas de **griefing passif** : bloquer une zone ou une porte de manière permanente sans raison stratégique reste interdit. 🚪❌</li>
-                    </ul>
-                    
-                    <h3>SCP-096 😢</h3>
-                    <ul>
-                        <li>**Déclenchement (Trigger) :** Motivation principale est d'éliminer les cibles qui ont vu son visage. 🖼️</li>
-                        <li>**Passivité :** Si personne n'a vu son visage, reste passif, pleure et évite les autres entités. 😭</li>
-                        <li>**Silence passif :** en état passif (non déclenché), vous ne parlez qu'avec des sons de pleurs ou de murmures. 🤫</li>
-                    </ul>
-                    
-                    <h3>SCP-939 (With Many Voices) 🐕</h3>
-                    <ul>
-                        <li>**Mimétisme et Chasse :** Utiliser l’ouïe pour localiser les proies et la capacité vocale pour les imiter et les attirer. 👂🗣️</li>
-                        <li>**Attaque conditionnelle :** N’attaquer un humain que si celui-ci fait du bruit ou entre en collision avec SCP-939. 💥</li>
-                        <li>Parler avec une voix crédible pour attirer les humains. 🎣</li>
-                        <li>Ne pas imiter un autre SCP ou un Administrateur. 🎭❌</li>
-                    </ul>
-                    
-                    <h3>SCP-106 🕳️</h3>
-                    <ul>
-                        <li>**Prédation ciblée :** Chercher des proies pour les envoyer dans votre Pocket Dimension pour tuer ou relâcher. 🌌</li>
-                        <li>**Téléportation :** Utiliser la capacité de téléportation pour apparaître stratégiquement. ⚡</li>
-                        <li>Pas de camping prolongé autour d’un spawn ou zone cruciale. ⛺❌</li>
-                    </ul>
-                    
-                    <h3>SCP-018 🥎 / SCP-207 🥤</h3>
-                    <ul>
-                        <li>**SCP-018 - Lancer RP :** Manipuler la balle de manière réaliste et dynamique. 🤾</li>
-                        <li>**SCP-207 - Effet RP :** Jouer l'effet de vitesse après consommation, sans arrêt sans logique RP. 💨</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="section" onclick="toggleSection(this)">
-                <div class="section-header">
-                    <div class="section-title">
-                        <h2>V. Règles Avancées par Classe SCP et Humaine 🔬</h2>
-                        <span class="clearance-level clearance-level-3">NIVEAU 3</span>
-                    </div>
-                    <span class="toggle-icon">▶</span>
-                </div>
-                <div class="section-content">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Classe</th>
-                                <th>Règles supplémentaires</th>
-                                <th>Emojis Clés</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>**Garde**</td>
-                                <td>Toujours vérifier les couloirs avant de tirer. Ne pas tirer sur Classe-D coopérative.</td>
-                                <td>🚨🚪</td>
-                            </tr>
-                            <tr>
-                                <td>**FIM**</td>
-                                <td>Priorité à la capture et non à la tuerie. Utiliser grenades et armes avec prudence RP.</td>
-                                <td>🔗💣</td>
-                            </tr>
-                            <tr>
-                                <td>**Chaos**</td>
-                                <td>Les explosions doivent être RP justifiées. Ne pas détruire tout environnement sans sens RP.</td>
-                                <td>🧨🚧</td>
-                            </tr>
-                            <tr>
-                                <td>**Scientifique**</td>
-                                <td>Documenter tout événement RP (capturé, SCP tué, évasion). Pas d’armes offensives sauf mission RP.</td>
-                                <td>📝🚫🔫</td>
-                            </tr>
-                            <tr>
-                                <td>**Classe-D**</td>
-                                <td>Planifier les évasions RP. Ne pas exploiter les failles pour tuer inutilement.</td>
-                                <td>🗺️🔪❌</td>
-                            </tr>
-                            <tr>
-                                <td>**SCP-049**</td>
-                            <td>Réanimation des 049-2 après élimination, attaque flexible selon RP.</td>
-                            <td>🧟‍♂️🔄</td>
-                        </tr>
-                        <tr>
-                            <td>**SCP-106**</td>
-                            <td>Ne pas capturer les alliés SCP sauf RP crédible.</td>
-                            <td>🤝❌</td>
-                        </tr>
-                        <tr>
-                            <td>**SCP-173**</td>
-                            <td>Déplacements et attaques libres selon RP, pas de contrainte de regard.</td>
-                            <td>👁️‍🗨️🚫</td>
-                        </tr>
-                        <tr>
-                            <td>**SCP-096**</td>
-                            <td>N’attaquer que si visage vu. Sinon passif et silencieux.</td>
-                            <td>😭🤫</td>
-                        </tr>
-                        <tr>
-                            <td>**SCP-939**</td>
-                            <td>Attaque uniquement si bruit ou collision. Mimétisme pour attirer les humains.</td>
-                            <td>👂🎭</td>
-                        </tr>
-                        <tr>
-                            <td>**SCP-079**</td>
-                            <td>Soutien RP pour SCP et humains. Manipulation stratégique des systèmes.</td>
-                            <td>⚙️🌐</td>
-                        </tr>
-                        <tr>
-                            <td>**SCP-018 / 207**</td>
-                            <td>Utilisation RP et logique. Pas de course illimitée ou trolling.</td>
-                            <td>💡🏁</td>
-                        </tr>
-                    </tbody>
-                </table>
-                </div>
-            </div>
-
-            <div class="section" onclick="toggleSection(this)">
-                <div class="section-header">
-                    <div class="section-title">
-                        <h2>VI. Procédures Administratives 👑</h2>
-                        <span class="clearance-level clearance-level-4">NIVEAU 4</span>
-                    </div>
-                    <span class="toggle-icon">▶</span>
-                </div>
-                <div class="section-content">
-                    <h3>Interactions avec l’Administration 📢</h3>
-                    <ul>
-                        <li>Pour faire un ticket en jeu, vous pouvez utiliser la touche **N** et le petit **⚠️** (Avertissement). 💬</li>
-                        <li>Signalement via commande ou Discord. 💬</li>
-                        <li>Respect immédiat des décisions. 🫡</li>
-                        <li>Discussions sur sanctions **hors-jeu seulement**. 🗣️ HRP</li>
-                    </ul>
-                    
-                    <div class="warning-important">
-                        **⚠ AVERTISSEMENT :** Le non-respect de ce règlement peut entraîner des sanctions allant du simple avertissement au bannissement permanent. Toutes les actions sont enregistrées et peuvent être utilisées comme preuves.
-                    </div>
-                </div>
-            </div>
-            
         </div>
-        
-        <footer>
-            <p>**SCP FOUNDATION - SITE-32**</p>
-            <p>SÉCURISER • CONTENIR • PROTÉGER</p>
-            <p class="redacted">████████████████████</p>
-            <p style="font-size: 0.8rem; margin-top: 1rem; opacity: 0.7;">
-                Ce document est la propriété de la Fondation SCP. Toute divulgation non autorisée sera punie conformément aux protocoles de sécurité.
-            </p>
-        </footer>
+
+        <div class="section">
+            <div class="section-header"><h2>🎭 SECTION 2 – Roleplay (RP)</h2></div>
+            <div class="section-content">
+                <ul>
+                    <li>Vous devez jouer votre personnage de manière réaliste. 👤</li>
+                    <li>Le FearRP est obligatoire. 😨</li>
+                    <li>Le PainRP est obligatoire. 🩸</li>
+                    <li>Interdiction du NoRP. ❌</li>
+                    <li>Les scènes doivent être cohérentes. 🧠</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header"><h2>⏳ SECTION 3 – New Life Rule (NLR)</h2></div>
+            <div class="section-content">
+                <ul>
+                    <li>Après votre mort, vous oubliez les 5 dernières minutes. 🧠💨</li>
+                    <li>Interdiction de retourner sur la scène pendant 5 minutes. 🕒</li>
+                    <li>Interdiction de revenge kill. 💀👊</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header"><h2>🔌 SECTION 4 – Métagaming & Powergaming</h2></div>
+            <div class="section-content">
+                <ul>
+                    <li>Le métagaming est interdit. 🚫💻</li>
+                    <li>Le powergaming est interdit. ⚡</li>
+                    <li>Interdiction d’inventer des objets irréalistes. 🔮</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header"><h2>💰 SECTION 5 – Braquages</h2></div>
+            <div class="section-content">
+                <ul>
+                    <li>Minimum de sécurité connectée : **(2)**. 👮‍♂️👮‍♂️</li>
+                    <li>Interdiction de braquer en zone safe. 🏠</li>
+                    <li>Pas de freekill durant un braquage. 🔫❌</li>
+                    <li>Négociations obligatoires en RP. 🤝</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header"><h2>🛡️ SECTION 6 – Sécurité</h2></div>
+            <div class="section-content">
+                <ul>
+                    <li>Corruption autorisée uniquement si RP cohérent. 💵</li>
+                    <li>Interdiction d’abus de pouvoir. 🚫👑</li>
+                    <li>Mandat obligatoire pour perquisition. 📄</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header"><h2>🔪 SECTION 7 – Criminalité</h2></div>
+            <div class="section-content">
+                <ul>
+                    <li>Interdiction du mass RDM. 💣</li>
+                    <li>Les prises d’otages doivent être sérieuses. ⛓️</li>
+                    <li>Raison RP obligatoire pour tuer. ⚖️</li>
+                    <li>Guerres de gang annoncées. 🚩</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header"><h2>🏗️ SECTION 8 – Construction & Base</h2></div>
+            <div class="section-content">
+                <ul>
+                    <li>Interdiction de props abusifs. 🧱</li>
+                    <li>Base réaliste obligatoire. 🏠</li>
+                    <li>Interdiction de bloquer le spawn. 🚪</li>
+                    <li>Keypad obligatoire. 🔢</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header"><h2>📦 SECTION 9 – Commerce & Arnaques</h2></div>
+            <div class="section-content">
+                <ul>
+                    <li>Arnaques non autorisées. 🚫💸</li>
+                    <li>Interdiction d’arnaque hors RP (bugs). 🐜</li>
+                    <li>Prix raisonnables. 🏷️</li>
+                    <li>Interdiction de scam staff. ⛔</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header"><h2>🔫 SECTION 10 – Utilisation des Armes</h2></div>
+            <div class="section-content">
+                <ul>
+                    <li>Arme sortie uniquement avec raison RP. ❌🔫</li>
+                    <li>Gunfight avec raison valable uniquement. 💥</li>
+                    <li>Tir interdit en zone safe. 🕊️</li>
+                    <li>FearRP strict sous menace. 😨</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header"><h2>⚖️ SECTION 11 – Sanctions</h2></div>
+            <div class="section-content">
+                <div class="sanction-grid">
+                    <div class="sanction-card">
+                        <h4>🔹 Mineures</h4>
+                        <p>Avertissement oral<br>Warn écrit<br>Jail 5-15 min</p>
+                    </div>
+                    <div class="sanction-card">
+                        <h4>🔹 Moyennes</h4>
+                        <p>Jail 30-60 min<br>Kick<br>Suivi staff</p>
+                    </div>
+                    <div class="sanction-card">
+                        <h4>🔹 Graves</h4>
+                        <p>Ban 24h à 1 sem.</p>
+                    </div>
+                    <div class="sanction-card">
+                        <h4>🔹 Très graves</h4>
+                        <p>Ban 1 mois / Perma ⛔</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-    
-    <script>
-        // Fonction d'authentification simplifiée (clic sur le bouton)
-        function authenticateUser() {
-            const gate = document.getElementById('access-gate');
-            const mainContent = document.getElementById('main-content');
-            const statusMessage = document.getElementById('status-message');
-            const connectButton = document.getElementById('connect-button');
-            
-            // Simuler le chargement
-            connectButton.disabled = true;
-            statusMessage.textContent = 'AUTHENTIFICATION EN COURS...';
 
-            setTimeout(() => {
-                statusMessage.textContent = 'ACCÈS AUTORISÉ. BIENVENUE, PERSONNEL DU SITE-32.';
-                
-                // Déverrouillage : masquer le sas et afficher le contenu après une courte attente
-                setTimeout(() => {
-                    gate.style.opacity = '0';
-                    setTimeout(() => {
-                        gate.style.display = 'none';
-                        mainContent.style.opacity = '1';
-                        // Lancement des autres scripts si le déverrouillage est réussi
-                        checkApplicationDeadline();
-                    }, 1000); // 1 seconde de transition du fade-out
-                }, 500); // Temps pour afficher le message "ACCÈS AUTORISÉ"
-            }, 1000); // 1 seconde pour le temps de "chargement"
-        }
+    <footer>
+        <p>&copy; 2026 ABRI-315 - Terminal de Contrôle</p>
+    </footer>
 
-
-        // Fonction d'application de la date limite 
-        function checkApplicationDeadline() {
-            const button = document.getElementById('adminApplicationButton');
-            // Date cible : Vendredi 19 Décembre 2025 (Définie pour garder le bouton actif après cette date)
-            const deadline = new Date('2025-12-19T00:00:00');
-            const now = new Date();
-
-            // Si le temps actuel est avant la date limite, désactiver le bouton
-            if (now < deadline) {
-                button.classList.add('disabled');
-                // Mise à jour du texte avec la date réelle
-                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                const formattedDate = deadline.toLocaleDateString('fr-FR', options);
-                button.textContent = `POSTULER (DÉBLOQUÉ LE ${formattedDate.toUpperCase()})`;
-            } else {
-                button.textContent = "POSTULER POUR LE STATUT D'ADMINISTRATEUR";
-                button.classList.remove('disabled');
-            }
-        }
-
-        // Fonction pour développer/réduire les sections
-        function toggleSection(element) {
-            element.classList.toggle('expanded');
-        }
-
-    </script>
 </body>
 </html>
